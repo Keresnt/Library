@@ -1,0 +1,61 @@
+CREATE TABLE Books (
+    book_id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    author VARCHAR(255) NOT NULL,
+    genre VARCHAR(100),
+    published_year INT,
+    copies_available INT DEFAULT 0
+);
+
+CREATE TABLE Borrow_Status (
+    borrow_id INT AUTO_INCREMENT PRIMARY KEY,
+    book_id INT NOT NULL,
+    user_id INT NOT NULL,
+    borrow_date DATE NOT NULL,
+    return_date DATE,
+    status VARCHAR(50) DEFAULT 'Borrowed',
+    FOREIGN KEY (book_id) REFERENCES Books(book_id)
+);
+
+INSERT INTO Borrow_Status (book_id, user_id, borrow_date, return_date, status)
+VALUES 
+(1, 1, '2024-03-01', '2024-03-15', 'Returned'),
+(2, 2, '2024-03-05', NULL, 'Borrowed'),
+(3, 3, '2024-02-25', '2024-03-01', 'Returned'),
+(4, 4, '2024-03-10', NULL, 'Borrowed'),
+(5, 5, '2024-02-20', '2024-02-28', 'Returned');
+
+
+CREATE TABLE Users (
+    user_id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    phone VARCHAR(20),
+    address VARCHAR(255)
+);
+
+INSERT INTO Users (name, email, phone, address)
+VALUES 
+('Juan Dela Cruz', 'juan.delacruz@gmail.com', '09171234567', 'Manila, Philippines'),
+('Maria Clara', 'maria.clara@gmail.com', '09181234568', 'Quezon City, Philippines'),
+('Andres Bonifacio', 'andres.bonifacio@gmail.com', '09191234569', 'Caloocan, Philippines'),
+('Gabriela Silang', 'gabriela.silang@gmail.com', '09201234560', 'Vigan, Ilocos Sur'),
+('Josefa Llanes Escoda', 'josefa.escoda@gmail.com', '09211234561', 'Dingras, Ilocos Norte');
+
+
+CREATE TABLE Book_User_Relationship (
+    relationship_id INT AUTO_INCREMENT PRIMARY KEY,
+    book_id INT NOT NULL,
+    user_id INT NOT NULL,
+    FOREIGN KEY (book_id) REFERENCES Books(book_id),
+    FOREIGN KEY (user_id) REFERENCES Users(user_id)
+);
+
+INSERT INTO Book_User_Relationship (book_id, user_id)
+VALUES 
+(1, 1),
+(2, 2),
+(3, 3),
+(4, 4),
+(5, 5);
+
